@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Track Order | CampusBite{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <div class="large-icon">🔎</div><p class="eyebrow">ORDER TRACKING</p><h1>Where’s my food?</h1><p class="muted">Enter the token number from your receipt to check your order.</p>
+    <form method="post" class="stack-form">
+      <label for="token">Token number</label><input id="token" name="token" type="number" min="1" placeholder="e.g. 1001" required>
+      <button class="primary-btn" type="submit">Check status <span>→</span></button>
+    </form>
+    {% if order %}
+    <div class="tracked-order">
+      <div class="tracked-head"><div><span class="muted small">TOKEN</span><h2>#{{ order.token }}</h2></div><span class="status-chip {% if order.status == 'Cancelled' %}status-cancelled{% endif %}">{{ order.status }}</span></div>
+      <div class="details-grid"><div><span>Student</span><strong>{{ order.student_name }}</strong></div><div><span>Roll number</span><strong>{{ order.roll_no }}</strong></div><div><span>Queue position</span><strong>{{ order.position if order.position else '—' }}</strong></div><div><span>People ahead</span><strong>{{ order.people_ahead if order.people_ahead is not none else '—' }}</strong></div><div><span>Estimated pickup</span><strong>{{ order.pickup }}</strong></div><div><span>Total bill</span><strong>₹{{ "%.2f"|format(order.total) }}</strong></div></div>
+      <h3 class="receipt-heading">Items</h3>
+      {% for item in order.items %}<div class="receipt-line"><span>{{ item.food_name }} × {{ item.quantity }}</span><strong>₹{{ "%.2f"|format(item.price * item.quantity) }}</strong></div>{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Order Confirmed | CampusBite{% endblock %}
+{% block content %}
+<section class="result-wrap">
+  <div class="result-card">
+    {% if order.status == 'Cancelled' %}
+      <div class="status-icon cancelled">✕</div><p class="eyebrow">ORDER CANCELLED</p><h1>This order is cancelled</h1>
+    {% else %}
+      <div class="status-icon">✓</div><p class="eyebrow">ORDER CONFIRMED</p><h1>You’re all set!</h1>
+      <p class="muted">Show your token at the campus canteen when collecting your food.</p>
+    {% endif %}
+    <div class="token-panel"><span>Your token number</span><strong>#{{ order.token }}</strong><span class="status-chip">{{ order.status }}</span></div>
+    <div class="details-grid"><div><span>Student</span><strong>{{ order.student_name }}</strong></div><div><span>Roll number</span><strong>{{ order.roll_no }}</strong></div><div><span>Queue position</span><strong>{{ order.position if order.position else '—' }}</strong></div><div><span>Estimated pickup</span><strong>{{ order.pickup }}</strong></div></div>
+    <h2 class="receipt-heading">Order summary</h2>
+    <div class="receipt-items">
+      {% for item in order.items %}
+      <div class="receipt-line"><span>{{ item.food_name }} <small>× {{ item.quantity }}</small></span><strong>₹{{ "%.2f"|format(item.price * item.quantity) }}</strong></div>
+      {% endfor %}
+    </div>
+    <div class="receipt-line"><span>Subtotal</span><span>₹{{ "%.2f"|format(order.subtotal) }}</span></div>
+    <div class="receipt-line discount"><span>Discount</span><span>− ₹{{ "%.2f"|format(order.discount) }}</span></div>
+    <div class="receipt-total"><span>Total</span><strong>₹{{ "%.2f"|format(order.total) }}</strong></div>
+    <div class="button-row"><a class="primary-btn link-btn" href="{{ url_for('check_order') }}">Track order</a><a class="secondary-btn" href="{{ url_for('index') }}">Order more</a></div>
+  </div>
+</section>
+{% endblock %}

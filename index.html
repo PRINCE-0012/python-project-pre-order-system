@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Order Food | CampusBite{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">YOUR CAMPUS CANTEEN, MADE EASIER</p>
+    <h1>Good food.<br><span>Less waiting.</span></h1>
+    <p class="hero-copy">Pre-order your favourites, get your token, and pick up your food when it’s ready.</p>
+    <div class="hero-pills"><span>✓ Easy pre-order</span><span>✓ Live token lookup</span><span>✓ 10% off ₹300+</span></div>
+  </div>
+  <div class="hero-art" aria-hidden="true"><div class="food-circle">🍕</div><span class="floating f1">🍔</span><span class="floating f2">🥤</span><span class="floating f3">☕</span></div>
+</section>
+
+<form class="order-layout" action="{{ url_for('place_order') }}" method="post">
+  <section class="menu-section">
+    <div class="section-heading">
+      <div><p class="eyebrow">MADE FRESH FOR YOU</p><h2>Campus menu</h2></div>
+      <span class="menu-count">8 favourites</span>
+    </div>
+    <div class="menu-grid">
+      {% for number, item in menu.items() %}
+      <article class="food-card">
+        <div class="food-emoji emoji-{{ number }}">
+          {% if number == 1 %}🍔{% elif number == 2 %}🍕{% elif number == 3 %}🥪{% elif number == 4 %}🥟{% elif number == 5 %}🍛{% elif number == 6 %}🥤{% elif number == 7 %}☕{% else %}🍵{% endif %}
+        </div>
+        <div class="food-info"><h3>{{ item[0] }}</h3><p class="price">₹{{ item[1] }}</p></div>
+        <label class="quantity-label" for="quantity-{{ number }}">Qty</label>
+        <input id="quantity-{{ number }}" class="quantity" type="number" name="quantity_{{ number }}" min="0" max="99" value="0">
+      </article>
+      {% endfor %}
+    </div>
+    <p class="hint">Choose a quantity for each item. Leave items at 0 if you don’t want them.</p>
+  </section>
+
+  <aside class="checkout-card">
+    <div class="checkout-title"><span class="checkout-icon">🧾</span><div><h2>Your order</h2><p>Student details & checkout</p></div></div>
+    <label for="student_name">Student name</label>
+    <input id="student_name" name="student_name" type="text" placeholder="e.g. Prince Kumar" maxlength="100" required>
+    <label for="roll_no">Roll number</label>
+    <input id="roll_no" name="roll_no" type="text" placeholder="e.g. 123456" maxlength="50" required>
+    <div class="discount-note"><span>🎉</span><p><strong>Hungry for a deal?</strong><br>Get 10% off orders of ₹300 or more.</p></div>
+    <button class="primary-btn" type="submit">Place pre-order <span>→</span></button>
+    <p class="secure-note">Your order token will appear after checkout.</p>
+  </aside>
+</form>
+{% endblock %}

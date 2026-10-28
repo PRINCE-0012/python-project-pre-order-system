@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Cancel Order | CampusBite{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <div class="large-icon">🧾</div><p class="eyebrow">ORDER MANAGEMENT</p><h1>Cancel an order</h1><p class="muted">Enter the token number for the order you want to cancel.</p>
+    <form method="post" class="stack-form">
+      <label for="token">Token number</label><input id="token" name="token" type="number" min="1" placeholder="e.g. 1001" required>
+      <button class="danger-btn" type="submit">Cancel order</button>
+    </form>
+    <p class="hint">Cancelled orders remain in the record but are removed from the active queue.</p>
+  </div>
+</section>
+{% endblock %}
